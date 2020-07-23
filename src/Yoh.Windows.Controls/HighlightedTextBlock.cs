@@ -7,7 +7,7 @@ using System.Windows.Media;
 
 namespace Yoh.Windows.Controls
 {
-    public class HighlightTextBlock : TextBlock
+    public class HighlightedTextBlock : TextBlock
     {
         private sealed class TextPropertyMetadata : FrameworkPropertyMetadata
         {
@@ -16,7 +16,7 @@ namespace Yoh.Windows.Controls
                 BaseTextChanged = baseMetadata.PropertyChangedCallback;
 
                 base.Merge(baseMetadata, dp);
-                PropertyChangedCallback = (d, e) => ((HighlightTextBlock)d).OnTextChanged(e);
+                PropertyChangedCallback = (d, e) => ((HighlightedTextBlock)d).OnTextChanged(e);
             }
         }
 
@@ -24,12 +24,12 @@ namespace Yoh.Windows.Controls
         private static PropertyChangedCallback BaseTextChanged;
         private bool _textChanging;
 
-        static HighlightTextBlock() => TextProperty.OverrideMetadata(typeof(HighlightTextBlock), new TextPropertyMetadata());
+        static HighlightedTextBlock() => TextProperty.OverrideMetadata(typeof(HighlightedTextBlock), new TextPropertyMetadata());
 
         public static readonly DependencyProperty HighlightProperty = DependencyProperty.RegisterAttached(
             nameof(Highlight),
             typeof(Brush),
-            typeof(HighlightTextBlock),
+            typeof(HighlightedTextBlock),
             new FrameworkPropertyMetadata(
                 Brushes.Transparent,
                 FrameworkPropertyMetadataOptions.AffectsRender |
@@ -45,12 +45,12 @@ namespace Yoh.Windows.Controls
         public static readonly DependencyProperty HighlightedTextProperty = DependencyProperty.Register(
             nameof(HighlightedText),
             typeof(string),
-            typeof(HighlightTextBlock),
+            typeof(HighlightedTextBlock),
             new FrameworkPropertyMetadata(
                 string.Empty,
                 FrameworkPropertyMetadataOptions.AffectsMeasure |
                 FrameworkPropertyMetadataOptions.AffectsRender,
-                (d, e) => ((HighlightTextBlock)d).OnTextChanged(e),
+                (d, e) => ((HighlightedTextBlock)d).OnTextChanged(e),
                 (d, v) => v ?? string.Empty));
 
         public string HighlightedText
