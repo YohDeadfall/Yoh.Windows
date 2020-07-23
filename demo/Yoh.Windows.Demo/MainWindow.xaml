@@ -1,0 +1,26 @@
+﻿<Window x:Class="Yoh.Windows.Demo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:c="clr-namespace:Yoh.Windows.Controls;assembly=Yoh.Windows.Controls"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Grid.Column="0" Content="Text to display:" Target="{Binding ElementName=TextToDisplay}" />
+        <Label Grid.Row="1" Grid.Column="0" Content="Text to highlight:" Target="{Binding ElementName=TextToHighlight}" />
+        <TextBox Grid.Row="0" Grid.Column="1" x:Name="TextToDisplay" VerticalAlignment="Center" Margin="2" />
+        <TextBox Grid.Row="1" Grid.Column="1" x:Name="TextToHighlight" VerticalAlignment="Center" Margin="2" />
+        <c:HighlightTextBlock Grid.Row="2" Grid.ColumnSpan="2"
+                              Text="{Binding ElementName=TextToDisplay, Path=Text}"
+                              HighlightedText="{Binding ElementName=TextToHighlight, Path=Text}"
+                              Highlight="Red" />
+    </Grid>
+</Window>
+
