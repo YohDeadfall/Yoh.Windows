@@ -20,7 +20,7 @@
         <c:HighlightedTextBlock Grid.Row="2" Grid.ColumnSpan="2"
                               Text="{Binding ElementName=TextToDisplay, Path=Text}"
                               HighlightedText="{Binding ElementName=TextToHighlight, Path=Text}"
-                              Highlight="Red" />
+                              HighlightBackground="Red" />
     </Grid>
 </Window>
 

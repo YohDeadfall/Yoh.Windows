@@ -20,14 +20,20 @@ namespace Yoh.Windows.Controls
             }
         }
 
-        private static Binding HighlightBinding;
+        private static readonly Binding HighlightBackgroundBinding;
+        private static readonly Binding HighlightForegroundBinding;
         private static PropertyChangedCallback BaseTextChanged;
         private bool _textChanging;
 
-        static HighlightedTextBlock() => TextProperty.OverrideMetadata(typeof(HighlightedTextBlock), new TextPropertyMetadata());
+        static HighlightedTextBlock()
+        {
+            HighlightBackgroundBinding = new Binding { Path = new PropertyPath(HighlightBackgroundProperty), RelativeSource = RelativeSource.Self };
+            HighlightForegroundBinding = new Binding { Path = new PropertyPath(HighlightForegroundProperty), RelativeSource = RelativeSource.Self };
+            TextProperty.OverrideMetadata(typeof(HighlightedTextBlock), new TextPropertyMetadata());
+        }
 
-        public static readonly DependencyProperty HighlightProperty = DependencyProperty.RegisterAttached(
-            nameof(Highlight),
+        public static readonly DependencyProperty HighlightBackgroundProperty = DependencyProperty.RegisterAttached(
+            nameof(HighlightBackground),
             typeof(Brush),
             typeof(HighlightedTextBlock),
             new FrameworkPropertyMetadata(
@@ -36,10 +42,26 @@ namespace Yoh.Windows.Controls
                 FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender |
                 FrameworkPropertyMetadataOptions.Inherits));
 
-        public Brush Highlight
+        public Brush HighlightBackground
         {
-            get => (Brush)GetValue(HighlightProperty);
-            set => SetValue(HighlightProperty, value);
+            get => (Brush)GetValue(HighlightBackgroundProperty);
+            set => SetValue(HighlightBackgroundProperty, value);
+        }
+
+        public static readonly DependencyProperty HighlightForegroundProperty = DependencyProperty.RegisterAttached(
+            nameof(HighlightForeground),
+            typeof(Brush),
+            typeof(HighlightedTextBlock),
+            new FrameworkPropertyMetadata(
+                Brushes.Black,
+                FrameworkPropertyMetadataOptions.AffectsRender |
+                FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender |
+                FrameworkPropertyMetadataOptions.Inherits));
+
+        public Brush HighlightForeground
+        {
+            get => (Brush)GetValue(HighlightForegroundProperty);
+            set => SetValue(HighlightForegroundProperty, value);
         }
 
         public static readonly DependencyProperty HighlightedTextProperty = DependencyProperty.Register(
@@ -97,16 +119,10 @@ namespace Yoh.Windows.Controls
                         if (start > end)
                             yield return new Run(text.Substring(end, start - end));
 
-                        if (HighlightBinding is null)
-                            HighlightBinding = new Binding
-                            {
-                                Path = new PropertyPath(HighlightProperty),
-                                RelativeSource = RelativeSource.Self
-                            };
-
                         var highlight = new Run();
 
-                        highlight.SetBinding(TextElement.BackgroundProperty, HighlightBinding);
+                        highlight.SetBinding(TextElement.BackgroundProperty, HighlightBackgroundBinding);
+                        highlight.SetBinding(TextElement.ForegroundProperty, HighlightForegroundBinding);
                         highlight.Text = text.Substring(start, highlighted.Length);
 
                         yield return highlight;
